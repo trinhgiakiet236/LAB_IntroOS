@@ -2,39 +2,48 @@
 // Creator: Tran Trung Tin
 // Exercise
 #include <sys/types.h>
-
 #include <stdio.h>
-
 #include <unistd.h>
-
 #include <sys/wait.h>
 
 int main() {
-  pid_t pid;
-  
-  // khai báo biến toàn cục n
-  // lấy giá trị n vào từ lời gọi
-  
-  /* fork a child process */
-  pid = fork();
-  if (pid < 0) {
-    /* error occurred */
-    fprintf(stderr, "Fork Failed");
-    return 1;
-  } else if (pid == 0) {
-    /* child process */
+    pid_t pid;
+    int n;
     
-    // vòng lặp tính tổng S
-    // in ra S
+    // Lấy giá trị n vào từ người dùng
+    printf("Enter a number: ");
+    scanf("%d", &n);
+
+    /* Fork a child process */
+    pid = fork();
     
-  } else {
-    /* parent process */
-    // tính ước số 
-    // in ra
+    if (pid < 0) {
+        /* Error occurred */
+        fprintf(stderr, "Fork Failed");
+        return 1;
+    } else if (pid == 0) {
+        /* Child process: Calculate the sum S */
+        
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            sum += i;
+        }
+        printf("Child: The sum of numbers from 1 to %d is %d\n", n, sum);
+        
+    } else {
+        /* Parent process: Calculate the divisors of n */
+        
+        printf("Parent: The divisors of %d are: ", n);
+        for (int i = 1; i <= n; i++) {
+            if (n % i == 0) {
+                printf("%d ", i);
+            }
+        }
+        printf("\n");
+
+        // Wait for the child process to finish
+        wait(NULL);
+    }
     
-    wait(NULL);
-    
-    
-  }
-  return 0;
+    return 0;
 }
